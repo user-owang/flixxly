@@ -4,13 +4,13 @@ import urllib.parse
 
 headshot_url = 'https://media.themoviedb.org/t/p/w470_and_h470_face'
 poster_url = 'https://media.themoviedb.org/t/p/w440_and_h660_face'
-actor_icon_url = 'https://media.themoviedb.org/t/p/w180_and_h180_face'
+person_icon_url = 'https://media.themoviedb.org/t/p/w132_and_h132_face'
 movie_icon_url = 'https://media.themoviedb.org/t/p/w188_and_h282_bestv2'
 
 
-def actor_fetch(id):
-    """Pulls basic actor information from tmdb API given an actor id. Returns a python dict"""
-    url = f"https://api.themoviedb.org/3/person/{id}?language=en-US"
+def person_fetch(id):
+    """Pulls basic person information from tmdb API given a person id. Returns a python dict"""
+    url = f"https://api.themoviedb.org/3/person/{id}?append_to_response=movie_credits&language=en-US"
 
     headers = {
         "accept": "application/json",
@@ -21,8 +21,8 @@ def actor_fetch(id):
 
     return response.json()
 
-def actor_credits(id):
-    """Pulls actor filmography from tmdb API given an actor id. Returns a python dict"""
+def person_credits(id):
+    """Pulls person filmography from tmdb API given a person id. Returns a python dict"""
     url = f"https://api.themoviedb.org/3/person/{id}/movie_credits?language=en-US"
 
     headers = {
@@ -36,7 +36,7 @@ def actor_credits(id):
 
 def movie_fetch(id):
     """Pulls basic movie information from tmdb API given a movie id. Returns a python dict"""
-    url = f"https://api.themoviedb.org/3/movie/{id}?language=en-US"
+    url = f"https://api.themoviedb.org/3/movie/{id}?append_to_response=credits&language=en-US"
 
     headers = {
         "accept": "application/json",
@@ -74,10 +74,10 @@ def multi_search(term):
 
     return response.json()
 
-def create_actor(id):
-    """Creates a simplified actor python dict with only the information we will need. Requires an actor id"""
-    info = actor_fetch(id)
-    filmography = actor_credits(id)
+def create_person(id):
+    """Creates a simplified person python dict with only the information we will need. Requires a person id"""
+    info = person_fetch(id)
+    filmography = person_credits(id)
 
     response = dict()
     response['id'] = id
@@ -128,7 +128,7 @@ def search_results(term):
                 'id': item['id']
             }
             if item['media_type'] == 'person':
-                query['img_url'] = f"{actor_icon_url}{item['profile_path']}"
+                query['img_url'] = f"{person_icon_url}{item['profile_path']}"
                 query['name'] = item['name']
             if item['media_type'] == 'movie':
                 query['img_url'] = f"{movie_icon_url}{item['poster_path']}"
@@ -136,3 +136,6 @@ def search_results(term):
             response['results'].append(query)
     
     return response
+
+# def create_feed(following):
+    

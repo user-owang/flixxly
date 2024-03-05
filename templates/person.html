@@ -1,0 +1,94 @@
+{% extends 'base.html' %} {%block title%}{{person['name']}}{%endblock%} {%block
+content%}
+<div class="container">
+  <div class="row">
+    <aside>
+      <div>
+        <div class="person_picture">insert picture here</div>
+      </div>
+      <div>
+        <div><p>{{person['name']}}</p></div>
+        <div>
+          {% if g.user %} {% if g.user.is_following(person['id']) %}
+          <form method="POST" action="/people/remove-follow/{{ person.id }}">
+            <button class="btn btn-outline-primary btn-sm">Unfollow</button>
+          </form>
+          {% else %}
+          <form method="POST" action="/people/add-follow/{{ person.id }}">
+            <button class="btn btn-primary btn-sm">Follow</button>
+          </form>
+          {% endif %} {% endif %}
+        </div>
+      </div>
+    </aside>
+    <div class="contents">
+      <div class="header">
+        <span
+          ><button class="tablinks" id="basic-info">Basic Info</button></span
+        >
+        <span
+          ><button class="tablinks" id="filmography">Filmography</button></span
+        >
+        <span><button class="tablinks" id="crew">Crew</button></span>
+      </div>
+      <div class="info hidden">
+        <h2>Basic Info</h2>
+        <div>
+          <div>
+            <h3>Birthday</h3>
+            <p>{{birthdate}} ({{age}})</p>
+          </div>
+          <div>
+            <h3>Gender</h3>
+            <p>{{gender}}</p>
+          </div>
+          <div>
+            <h3>Known For</h3>
+            <p>{{person['known_for_department']}}</p>
+          </div>
+        </div>
+        <h3>Biography</h3>
+        <p>{{person['biography']}}</p>
+        <h3>Also known as:</h3>
+        <p>
+          <ul>
+            {% for name in person['also_known_as']%}
+            <li>{{name}}</li>
+            {% endfor %}
+          </ul>
+        </p>
+      </div>
+      <div class="filmography hidden">
+        <h2>Filmography</h2>
+        <div>
+          <h3>Cast</h3>
+          <ul>
+            {% for movie in person['movie_credits']['cast'] %}
+            <li>
+              <div>
+                <h4><a href="/movies/{{movie['id']}}">{{movie['title']}} ({{movie['release_date'][:4]}})</a></h4>
+                <small>as {{movie['character']}}</small>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div>
+          <h3>Crew</h3>
+          <ul>
+            {% for movie in person['movie_credits']['crew'] %}
+            <li>
+              <div>
+                <h4><a href="/movies/{{movie['id']}}">{{movie['title']}} ({{movie['release_date'][:4]}})</a></h4>
+                <small>...{{movie['job']}}</small>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="crew hidden"></div>
+    </div>
+  </div>
+</div>
+{%endblock%}

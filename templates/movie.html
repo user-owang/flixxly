@@ -1,0 +1,89 @@
+{% extends 'base.html' %} {%block title%}{{movie['title']}}{%endblock%} {%block
+content%}
+<div class="container">
+  <div class="row">
+    <aside>
+      <div>
+        <div class="movie_poster">insert picture here</div>
+      </div>
+      <div>
+        <div><p>{{movie['title']}}</p></div>
+        <div>
+          {% if g.user %} {% if g.user.is_watching(movie['id']) %}
+          <form
+            method="POST"
+            action="/movies/remove-watchlist/{{ movie['id'] }}"
+          >
+            <button class="btn btn-outline-primary btn-sm">
+              Remove from watchlist
+            </button>
+          </form>
+          {% else %}
+          <form method="POST" action="/movies/add-watchlist/{{ movie['id'] }}">
+            <button class="btn btn-primary btn-sm">Add to watchlist</button>
+          </form>
+          {% endif %} {% if g.user.has_seen(movie['id']) %}
+          <form
+            method="POST"
+            action="/movies/remove-seenlist/{{ movie['id'] }}"
+          >
+            <button class="btn btn-outline-primary btn-sm">
+              Remove from seenlist
+            </button>
+          </form>
+          {% else %}
+          <form method="POST" action="/movies/add-seenlist/{{ movie['id'] }}">
+            <button class="btn btn-primary btn-sm" id="add-seen">
+              Add to seenlist
+            </button>
+          </form>
+          {% endif %} {% endif %}
+        </div>
+      </div>
+    </aside>
+    <div class="contents">
+      <div class="header">
+        <span><button class="tablinks" id="overview">Overview</button></span>
+        <span><button class="tablinks" id="cast">Cast</button></span>
+        <span><button class="tablinks" id="crew">Crew</button></span>
+      </div>
+      <div class="overview hidden">
+        <h2>Overview</h2>
+        <p>{{movie['overview']}}</p>
+        <h3>Genres</h3>
+        <p>{% for genre in movie['genres']%} {% endfor %}</p>
+      </div>
+      <div class="cast hidden">
+        <h2>Cast</h2>
+        {% for person in movie['credits']['cast'] %}
+        <li>
+          <div>insert actor picture here</div>
+          <div>
+            <h4><a href="/people/{{person['id']}}">{{person['name']}}</a></h4>
+            <small>as {{person['character']}}</small>
+          </div>
+        </li>
+        {% endfor %}
+      </div>
+      <div class="crew hidden">
+        <h2>Crew</h2>
+        {% for dpt in departments %}
+        <h3>{{dpt}}</h3>
+        <ul>
+          {% for member in movie['credits']['crew']%} {% if member['department']
+          == dpt %}
+          <li>
+            <div>insert crew picture here</div>
+            <div>
+              <h4><a href="/people/{{member['id']}}">{{member['name']}}</a></h4>
+              <small>...{{member['job']}}</small>
+            </div>
+          </li>
+          {% endif %} {% endfor %}
+        </ul>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
