@@ -2,9 +2,16 @@
 content%}
 <div class="container">
   <div class="row">
-    <aside>
+    <aside class="col-md-3">
       <div>
-        <div class="movie_poster">insert picture here</div>
+        {% if movie['poster_path'] %}
+        <img
+          src="https://media.themoviedb.org/t/p/w220_and_h330_face{{ movie['poster_path'] }}"
+          alt=""
+        />
+        {%else%}
+        <div class="no-poster"></div>
+        {%endif%}
       </div>
       <div>
         <div><p>{{movie['title']}}</p></div>
@@ -41,7 +48,7 @@ content%}
         </div>
       </div>
     </aside>
-    <div class="contents">
+    <div class="col-md-9 contents">
       <div class="header">
         <span><button class="tablinks" id="overview">Overview</button></span>
         <span><button class="tablinks" id="cast">Cast</button></span>

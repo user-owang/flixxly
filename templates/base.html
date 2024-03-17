@@ -4,42 +4,63 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{%block title%}{%endblock%}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo+Play:wght@200..1000&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://unpkg.com/bootstrap/dist/css/bootstrap.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
     <script src="https://unpkg.com/jquery"></script>
     <script src="https://unpkg.com/bootstrap"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script>
+    <script src="/static/js/autoscroll.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    {% block styling %}{%endblock%}
   </head>
   <body>
     <nav class="navbar navbar-expand">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand"> Flixxly </a>
+          <a href="/">
+            <div class="logo navbar-brand">
+              <div class="logo-img"></div>
+              Flixxly
+            </div>
+          </a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-          {% if request.endpoint != None %}
           <li>
             <form class="navbar-form navbar-right" action="/search">
-              <input
-                name="q"
-                class="form-control"
-                placeholder="Search Flixxly"
-                id="search"
-              />
-              <button class="btn btn-default">
-                <span class="fa fa-search"></span>
-              </button>
+              <div class="input-group">
+                <input
+                  name="q"
+                  class="form-control"
+                  placeholder="Search Flixxly"
+                  id="search"
+                />
+                <button class="btn btn-outline-secondary" id="search-btn">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
             </form>
           </li>
-          {% endif %} {% if not g.user %}
-          <li><a href="/register">Sign up</a></li>
-          <li><a href="/login">Log in</a></li>
+          {% if not g.user %}
+          <li class="nav-item"><a href="/register">Sign up</a></li>
+          <li class="nav-item"><a href="/login">Log in</a></li>
           {% else %}
-          <li>
+          <li class="nav-item">
             <a href="/users/{{ g.user.id }}"> {{g.user.username}} </a>
           </li>
-          <li><a href="/logout">Log out</a></li>
+          <li class="nav-item"><a href="/logout">Log out</a></li>
           {% endif %}
         </ul>
       </div>

@@ -1,0 +1,188 @@
+{% extends 'base.html' %} {% block title %}Welcome to Flixxly{% endblock %}
+{%block styling%}
+<link rel="stylesheet" href="/static/css/landingpage.css" />{%endblock%} {%
+block content %}
+<div class="dark row">
+  <div class="container">
+    <div class="banner1">
+      <div class="banner1-shader1"></div>
+      <div class="banner1-shader2">
+        <div class="title">
+          <h1>Welcome.</h1>
+          <h2>We are your window to the latest in movies. Explore now.</h2>
+        </div>
+      </div>
+    </div>
+    <div class="banner2">
+      <div class="inside-banner">
+        <!-- <div class="title">
+          <h1>Welcome.</h1>
+          <h2>We are your window to the latest in movies. Explore now.</h2>
+        </div> -->
+        <div class="search-bar-big">
+          <form action="/search">
+            <div class="input-group">
+              <input
+                name="q"
+                class="form-control"
+                placeholder="Search for a movie, person or user......"
+                id="search2"
+              />
+              <button class="btn btn-outline-secondary" id="search-btn">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="light row">
+  <div class="container">
+    <section class="other-content">
+      <div class="info">
+        <div class="inside-info">
+          <div class="info-title">
+            <h2>Out of the loop? Flixxly's got the scoop!</h2>
+          </div>
+          <div class="info-signup">
+            <p>
+              Choosing what to watch sometimes feels like a chore, but it
+              doesn't need to be. Flixxly can help you keep up to date on the
+              people and the flicks you didn't even know you were interested in
+              yet. Create an account today and start following what catches your
+              eye!
+            </p>
+            <a href="/register" class="register-btn"> Register here </a>
+          </div>
+          <div class="info-features">
+            <div class="feature release-radar">
+              <div class="icon">
+                <i class="bi bi-radar"></i>
+              </div>
+              <h4>Release Radar</h4>
+              <p>
+                A curated list of upcoming movies featuring the actors, writers,
+                directors or even stunt coordinators you follow on Flixxly.
+              </p>
+            </div>
+            <div class="feature watchlist">
+              <div class="icon">
+                <i class="bi bi-binoculars"></i>
+              </div>
+              <h4>Watchlist</h4>
+              <p>
+                A collection of movies you havent gotten around to watching yet
+                specific to each individual user. Maybe you'll find another
+                interested buddy to watch with you.
+              </p>
+            </div>
+            <div class="feature trending">
+              <div class="icon">
+                <i class="bi bi-graph-up-arrow"></i>
+              </div>
+              <h4>Trending</h4>
+              <p>
+                Keep up to date with the the most talked about movies and people
+                of the day. You'll always be clued-in to what's hot.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="theatres-display">
+        <div class="inside-theatres">
+          <div class="theatres-title">
+            <h3>In theatres now</h3>
+          </div>
+          <div class="theatres-contents">
+            <div class="scroll-content">
+              {% for movie in theatres['results'] %}
+              <div class="movie-tile">
+                <a href="/movies/{{movie['id']}}">
+                  {% if movie['poster_path']%}
+                  <img
+                    src="https://media.themoviedb.org/t/p/w220_and_h330_face{{movie['poster_path']}}"
+                    alt=""
+                  />
+                  {%else%}
+                  <div class="no-poster"></div>
+                  {%endif%}
+                </a>
+                <div class="about">
+                  <a href="/movies/{{movie['id']}}">
+                    <b>{{movie['title']}}</b>
+                  </a>
+                  <p>{{movie['formatted_date']}}</p>
+                </div>
+              </div>
+              {% endfor %}
+              <div class="see-more">
+                <a href="/in-theatres">See more.</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="trending-display">
+        <div class="inside-trending">
+          <div class="trending-title">
+            <h3>Trending</h3>
+            <div class="trending-switch">
+              <div class="selected option1" id="trending-movies">Movies</div>
+              <div class="option2" id="trending-people">People</div>
+            </div>
+          </div>
+          <div class="trending-contents">
+            <div class="scroll-content trending-movies">
+              {% for movie in trending_m['results'] %}
+              <div class="movie-tile">
+                <a href="/movies/{{movie['id']}}">
+                  {% if movie['poster_path']%}
+                  <img
+                    src="https://media.themoviedb.org/t/p/w220_and_h330_face{{movie['poster_path']}}"
+                    alt=""
+                  />
+                  {%else%}
+                  <div class="no-poster"></div>
+                  {%endif%}
+                </a>
+                <div class="about">
+                  <a href="/movies/{{movie['id']}}">
+                    <b>{{movie['title']}}</b>
+                  </a>
+                  <p>{{movie['formatted_date']}}</p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <div class="scroll-content trending-people hidden">
+              {% for person in trending_p['results'] %}
+              <div class="person-tile">
+                <a href="/people/{{person['id']}}">
+                  {% if person['profile_path']%}
+                  <img
+                    src="https://media.themoviedb.org/t/p/w220_and_h330_face{{person['profile_path']}}"
+                    alt=""
+                  />
+                  {%else%}
+                  <div class="no-profile"></div>
+                  {%endif%}
+                </a>
+                <div class="about">
+                  <a href="/people/{{person['id']}}">
+                    <b>{{person['name']}}</b>
+                  </a>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<script src="/static/js/landing-page.js"></script>
+{%endblock%}

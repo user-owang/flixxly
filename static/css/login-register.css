@@ -1,0 +1,33 @@
+.box {
+  width: 860px;
+  margin: 180px auto;
+  background-color: #efefef;
+  padding: 30px;
+}
+
+html {
+  background-color: rgb(40, 40, 40);
+}
+
+.row {
+  background-color: rgb(40, 40, 40);
+}
+
+h1 {
+  color: ;
+}
+
+input.btn {
+  border-color: #e53a35;
+  color: #e53a35;
+}
+
+input.btn:hover {
+  border-color: #e53a35;
+  background-color: #e53a35;
+  color: white;
+}
+
+a {
+  color: #e53a35;
+}

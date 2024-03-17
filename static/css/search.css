@@ -1,0 +1,40 @@
+.user-picture {
+  width: 90px;
+  height: 90px;
+  background-color: white;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.no-poster {
+  width: 94px;
+  height: 141px;
+  background-color: white;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg");
+  outline-color: black;
+  outline-width: 1px;
+  outline-style: solid;
+}
+
+.no-profile {
+  width: 90px;
+  height: 90px;
+  background-color: white;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg");
+  outline-color: black;
+  outline-width: 1px;
+  outline-style: solid;
+}
+
+.results > section {
+  max-height: 800px;
+  height: 800px;
+  overflow-y: scroll;
+}

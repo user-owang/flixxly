@@ -2,9 +2,12 @@
 {%block content%}
 <div class="container">
   <div class="row">
-    <aside>
+    <aside class="col-md-3">
       <div>
-        <div class="user_pic">insert picture here</div>
+        <div
+          class="user-picture"
+          style="background-image: url('{{user.img_url}}');"
+        ></div>
       </div>
       <div>
         <div><p>{{user.username}}</p></div>
@@ -14,11 +17,15 @@
         <div><p>{{user.bio}}</p></div>
       </div>
     </aside>
-    <div class="contents">
+    <div class="col-md-9 contents">
       <div class="header">
-        <span><button class="tablinks" id="following">Following</button></span>
-        <span><button class="tablinks" id="watchlist">Watchlist</button></span>
+        <span
+          ><button class="tablinks selected" id="watchlist">
+            Watchlist
+          </button></span
+        >
         <span><button class="tablinks" id="seenlist">Seenlist</button></span>
+        <span><button class="tablinks" id="following">Following</button></span>
       </div>
       <div class="following hidden">
         {% if user.follows %} {% for person in user.follows %}
@@ -58,7 +65,7 @@
         </div>
         {% endfor %} {% endif %}
       </div>
-      <div class="watchlist hidden">
+      <div class="watchlist">
         <a href="/users/{{user.id}}/edit-watchlist">Edit</a>
         {% if user.watchlist %} {% for movie in user.watchlist %}
         <div class="card movie-card">
@@ -157,4 +164,5 @@
     </div>
   </div>
 </div>
+<script src="/static/js/user.js"></script>
 {%endblock%}

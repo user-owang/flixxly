@@ -153,28 +153,129 @@ def unfollow(person):
     g.user.follows.remove(person)
     db.session.commit()
 
+def is_upcoming(movie):
+    """checks to see if a movie has a future release date or not. returns true or false"""
+    input = movie['release_date']
+    if input == '':
+        return True
+    release = datetime.datetime.strptime(input, '%Y-%m-%d')
+    today = datetime.date.today()
+    if release > today:
+        return True
+    return False
+
+def user_search(term):
+    """returns a python dictionary with the results of a User query looking for users with a username similar to term"""
+    query = User.query.filter(User.username.ilike(f'%{term.replace(" ","")}%')).all()
+    response = dict()
+    if query:
+        results = list()
+        for user in query:
+            result = dict()
+            result['id'] = user.id
+            result['username'] = user.username
+            result['bio'] = user.bio
+            result['img_url'] = user.img_url
+            results.append(result)
+        response['results'] = results
+        response['total_results'] = len(results)
+    else:
+        response['results'] = []
+        response['total_results'] = 0
+    
+    return response
+
 # api routes
 
-@app.route('/api/search', methods=['POST'])
-def search_db():
-    """Searches tmdb API for person or movie. Input term; returns json object with a page's worth of result objects."""
+@app.route('/api/release-radar', methods=['POST'])
+def rr_np():
+    """Returns json object with input page of results for release radar for all people g.user is following."""
     data = request.get_json()
-    response = search_results(data['term'])
+    follows = list()
+    for person in g.user.follows:
+        follows.append(str(person.id))
+    response = get_new_movies(follows, data['page'])
+    # convert_date(response, 'release_date')
     return jsonify(response)
 
-@app.route('/api/get_person', methods=['POST'])
-def get_person():
-    """Searches tmdb API for person. Input person ID; returns json object for person."""
+@app.route('/api/past-films', methods=['POST'])
+def pf_np():
+    """Returns json object with input page of results for past films for all people g.user is following."""
     data = request.get_json()
-    response = create_person(data['id'])
+    follows = list()
+    for person in g.user.follows:
+        follows.append(str(person.id))
+    response = get_old_movies(follows, data['page'])
+    # convert_date(response, 'release_date')
     return jsonify(response)
 
-@app.route('/api/get_movie', methods=['POST'])
-def get_movie():
-    """Searches tmdb API for movie. Input movie ID; returns json object for person."""
+@app.route('/api/now-showing', methods=['POST'])
+def ns_np():
+    """Returns json object with input page of results for movies currently in theatres."""
     data = request.get_json()
-    response = create_movie(data['id'])
+    response = get_now_showing(data['page'])
+    # convert_date(response, 'release_date')
     return jsonify(response)
+
+@app.route('/api/search-results', methods=['POST'])
+def sr_np():
+    """Returns json object with input page of search results for term."""
+    data = request.get_json()
+    response = dict()
+    if data['search_type'] == 'movie':
+        response = movie_search(data['term'], data['page'])
+        convert_date(response, 'release_date')
+    if data['search_type'] == 'person':
+        response = person_search(data['term'], data['page'])
+    if data['search_type'] == 'user':
+        response = user_search(data['term'])
+    return jsonify(response)
+
+@app.route('/api/get-follows')
+def get_follows():
+    """returns json object with list of person.id's from g.user.follows or empty dict"""
+    response = dict()
+    follows = list()
+    response['user'] = False
+    if g.user:
+        response['user'] = True
+        for person in g.user.follows:
+            follows.append(person.id)
+    
+    response['follows'] = follows
+    
+    return jsonify(response)
+
+@app.route('/api/get-watchlist')
+def get_watchlist():
+    """returns json object with list of movie.id's from g.user.watchlist or empty dict"""
+    response = dict()
+    watchlist = list()
+    response['user'] = False
+    if g.user:
+        response['user'] = True
+        for movie in g.user.watchlist:
+            watchlist.append(movie.id)    
+    
+    response['watchlist'] = watchlist
+    
+    return jsonify(response)
+
+@app.route('/api/get-seenlist')
+def get_seenlist():
+    """returns json object with list of movie.id's from g.user.seenlist or empty dict"""
+    response = dict()
+    seenlist = list()
+    response['user'] = False
+    if g.user:
+        response['user'] = True
+        for movie in g.user.seenlist:
+            seenlist.append(movie.id)
+    
+    response['seenlist'] = seenlist
+    
+    return jsonify(response)
+
 
 # website routes
 
@@ -229,6 +330,66 @@ def logout():
     do_logout()
     return redirect('/login')
 
+@app.route('/')
+def show_home():
+    if g.user:
+        follows = list()
+        for person in g.user.follows:
+            follows.append(str(person.id))
+        release_radar = get_new_movies(follows,1)
+        convert_date(release_radar, 'release_date')
+        old_movies = get_old_movies(follows,1)
+        convert_date(old_movies, 'release_date')
+        return render_template('following-home.html', release_radar=release_radar, old_movies=old_movies, followlist=g.user.follows)
+    else:
+        trending_m = get_trending_movies()
+        trending_p = get_trending_people()
+        theatres = get_now_showing(1)
+        convert_date(trending_m, 'release_date')
+        convert_date(theatres, 'release_date')
+        return render_template('landing-page.html', trending_m=trending_m, trending_p=trending_p, theatres=theatres)
+    
+@app.route('/search')
+def show_search_results():
+    term = request.args.get('q','').strip()
+    
+    if not term:
+        return render_template('search-results.html', results=None, type1=None)
+    
+    results = None
+    type1 = first_result_type(term)
+    if type1 == 'movie':
+        results = movie_search(term, 1)
+        convert_date(results, 'release_date')
+    if type1 == 'person':
+        results = person_search(term, 1)
+    if type1 == 'user':
+        results = user_search(term)
+        if results['total_results'] == 0:
+            type1 = None
+    return render_template('search-results.html', results = results, type1=type1)
+
+@app.route('/trending-movies')
+def show_trending_movies():
+    response = get_trending_movies()
+    convert_date(response, 'release_date')
+    movies = response['results']
+    return render_template('trending-movies-home.html', movies=movies)
+
+@app.route('/trending-people')
+def show_trending_people():
+    response = get_trending_people()
+    people = response['results']
+    return render_template('trending-people-home.html', people=people)
+
+@app.route('/in-theatres')
+def show_in_theatres():
+    response = get_now_showing(1)
+    convert_date(response, 'release_date')
+    movies = response['results']
+    return render_template('now-showing-home.html', movies=movies)
+
+
 # user routes
 
 @app.route('/users/<int:id>')
@@ -249,6 +410,9 @@ def edit_user(id):
 @app.route('/movies/<int:id>')
 def show_movie(id):
     movie = movie_fetch(id)
+    adate = movie['release_date']
+    newdate = datetime.datetime.strptime(adate, '%Y-%m-%d').strftime('%b %d, %Y')
+    movie['formatted_date'] = newdate
     departments = get_crew_dpts(movie)
     return render_template('movie.html', movie=movie, departments=departments)
 
@@ -308,9 +472,7 @@ def add_seenlist(id):
         item = Seenlist(user_id = g.user.id, movie_id = id)
         
         db.session.add(item)
-        db.session.commit()
-
-        
+        db.session.commit()    
     else:
         flash('Invalid movie.')
     prev = request.referrer

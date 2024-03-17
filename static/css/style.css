@@ -1,0 +1,88 @@
+/*
+logo color = #E53A35 
+font color = #8c8c8c
+neutral color = #efefef
+highlight color = #caebf2
+logo font = cairo play
+*/
+body {
+  font-family: Helvetica, sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+.logo {
+  display: flex;
+  font-family: "Cairo Play";
+  font-size: 24px;
+}
+
+.logo-img {
+  width: 37px;
+  height: 27px;
+  min-height: 27px;
+  min-width: 37px;
+  background-image: url(/static/images/flixxly.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+nav {
+  background-color: #efefef;
+}
+
+nav li.nav-item {
+  display: flex;
+  align-items: center;
+  margin: 0px 5px;
+}
+
+nav li a {
+  color: #e53a35;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+nav li a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+nav form {
+  display: flex;
+}
+
+.hidden {
+  display: none;
+}
+
+section.now-showing-movies {
+  max-height: 800px;
+  height: 800px;
+  overflow-y: scroll;
+}
+
+#search-btn {
+  border-color: #e53a35;
+  color: #e53a35;
+}
+
+#search-btn:hover {
+  border-color: #e53a35;
+  color: #e53a35;
+  background-color: #caebf2;
+}
+
+form input.form-control {
+  border-color: #e53a35;
+}
+form input.form-control:focus {
+  border-color: #caebf2;
+  box-shadow: rgba(229, 58, 53, 0.4) 0px 0px 0px 4px;
+}
+
+.row .container {
+  max-width: 1320px;
+}

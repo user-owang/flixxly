@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {%block title%}Flixxly Feed{%endblock%} {%block
+content%}
+<div class="container">
+  <div class="row">
+    <aside>
+      {% if g.user %}
+      <div>
+        <a href="/" class="tablinks selected" id="Following">Following</a>
+      </div>
+      {% endif %}
+      <div>
+        <a href="/trending-movies" class="tablinks" id="trending-movies"
+          >Trending Movies</a
+        >
+      </div>
+      <div>
+        <a href="/trending-people" class="tablinks" id="trending-people"
+          >Trending People</a
+        >
+      </div>
+      <div>
+        <a href="/in-theatres" class="tablinks" id="in-theatres">In Theatres</a>
+      </div>
+      {% if g.user %}
+      <div>
+        <a class="tablinks" href="/users/{{g.user.id}}">Profile</a>
+      </div>
+      {% endif %}
+    </aside>
+    <div class="contents">{% block display %} {% endblock %}</div>
+  </div>
+</div>
+{%endblock%}

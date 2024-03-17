@@ -1,0 +1,203 @@
+/* .row {
+  width: 100vw;
+} */
+.dark {
+  background-color: rgb(40, 40, 40);
+}
+.light {
+  background-color: #efefef;
+}
+
+.banner1 {
+  margin: 0;
+  padding: 0;
+  height: 330px;
+  width: 100%;
+  background-image: url(/static/images/landing-banner.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.banner1-shader1 {
+  height: 180px;
+  width: 100%;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(40, 40, 40, 0.4),
+    rgba(40, 40, 40, 0.9)
+  );
+}
+
+.banner1-shader2 {
+  height: 150px;
+  width: 100%;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(40, 40, 40, 0.9),
+    rgba(40, 40, 40, 1)
+  );
+  display: flex;
+  padding-left: 120px;
+}
+
+.banner2 {
+  height: 120px;
+  /* display: flex;
+  align-items: center; */
+  background-color: rgba(40, 40, 40, 1);
+  padding: 0px 120px;
+}
+
+.inside-banner {
+  min-width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.title h1 {
+  color: #e53a35;
+}
+
+banner2 form {
+  display: flex;
+  width: 100%;
+  display: flex;
+}
+
+.title h2 {
+  color: #efefef;
+  margin-bottom: 60px;
+}
+
+.info {
+  background-color: #efefef;
+  margin: 60px 60px;
+}
+
+.theatres-display {
+  background-color: #efefef;
+  margin: 60px 45px;
+  padding: 0 60px;
+}
+
+.trending-display {
+  background-color: #efefef;
+  margin: 60px 45px;
+  padding: 0 60px;
+}
+.info-title {
+  text-align: center;
+}
+.info-signup {
+  text-align: center;
+  padding: 0px;
+}
+.info-signup p {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 45px;
+  padding: 0px 45px;
+}
+.info-features {
+  display: flex;
+  margin-top: 90px;
+  justify-content: center;
+}
+
+.feature {
+  width: 300px;
+  margin: 0px auto;
+}
+
+.register-btn {
+  padding: 14px 20px;
+  background-color: #e53a35;
+  color: #efefef;
+  border-radius: 40px;
+}
+
+.trending-title h3 {
+  margin-right: 60px;
+}
+
+.feature h4 {
+  text-align: center;
+}
+
+.feature p {
+  text-align: center;
+}
+
+.scroll-content {
+  display: flex;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.no-poster {
+  width: 220px;
+  height: 330px;
+  background-color: rgb(219, 219, 219);
+  background-image: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.no-profile {
+  width: 220px;
+  height: 330px;
+  background-color: rgb(219, 219, 219);
+  background-image: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.trending-title {
+  display: flex;
+}
+
+.trending-switch {
+  display: flex;
+  height: 33.6px;
+  width: 150px;
+  background-color: rgb(40, 40, 40);
+  color: #efefef;
+  border-radius: 16.8px;
+}
+.trending-switch div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+}
+
+.trending-switch .selected {
+  background-color: #e53a35;
+  border-radius: 16.8px;
+}
+
+.scroll-content.hidden {
+  display: none;
+}
+
+.movie-tile {
+  margin: 15px;
+}
+
+.person-tile {
+  margin: 15px;
+}
+
+.about {
+  text-align: center;
+  padding: 15px 0px;
+}
+
+.icon {
+  text-align: center;
+  font-size: 40px;
+  color: #e53a35;
+  margin-bottom: 15px;
+}
