@@ -86,3 +86,7 @@ form input.form-control:focus {
 .row .container {
   max-width: 1320px;
 }
+
+.alert {
+  background-color: #caebf2;
+}

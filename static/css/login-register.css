@@ -9,20 +9,25 @@ html {
   background-color: rgb(40, 40, 40);
 }
 
-.row {
+body {
   background-color: rgb(40, 40, 40);
 }
 
-h1 {
-  color: ;
+.row {
+  background-color: rgb(40, 40, 40);
+  width: 100vw;
 }
 
-input.btn {
+h1 {
+  color: #e53a35;
+}
+
+a.btn {
   border-color: #e53a35;
   color: #e53a35;
 }
 
-input.btn:hover {
+a.btn:hover {
   border-color: #e53a35;
   background-color: #e53a35;
   color: white;
@@ -30,4 +35,21 @@ input.btn:hover {
 
 a {
   color: #e53a35;
+}
+
+input.btn {
+  border-color: #e53a35;
+  background-color: #e53a35;
+  color: white;
+}
+
+input.btn:hover {
+  border-color: #e53a35;
+  background-color: rgba(0, 0, 0, 0);
+  color: #e53a35;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
 }

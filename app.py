@@ -1,11 +1,10 @@
 from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
-from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from flask_sqlalchemy import SQLAlchemy
 from secret import READ_TOKEN, SECRET_KEY
 from tmdb import *
 import datetime
-from forms import LoginForm, AddUserForm
+from forms import LoginForm, AddUserForm, EditProfileForm
 from models import db, connect_db,User, Follow, Watchlist, Seenlist, Movie, Person
 
 app = Flask(__name__)
@@ -64,8 +63,10 @@ def db_add_movie(id):
             input = movie_to_add['release_date']
             release = datetime.datetime.strptime(input, '%Y-%m-%d')
             year = int(input[:4])
+            form_date = release.strftime('%b %d, %Y')
             movie.release_date = release
             movie.release_year = year
+            movie.formatted_date = form_date
         
         db.session.add(movie)
         db.session.commit()
@@ -305,6 +306,34 @@ def registration():
   
     return render_template('registration.html', form = form)
 
+@app.route('/edit-user', methods=['GET', 'POST'])
+def edit_user():
+    if g.user:
+        form = EditProfileForm(obj=g.user)
+
+        if form.validate_on_submit():
+            curr_user = User.authenticate(g.user.username, form.confirm_password.data)
+            if curr_user:
+                curr_user.username = form.username.data
+                curr_user.email = form.email.data
+                curr_user.bio = form.bio.data
+                if form.img_url.data:
+                    curr_user.img_url = form.img_url.data
+                else:
+                    curr_user.img_url = 'https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-1920x2048-qj0yfpqi.png'
+                
+                db.session.commit()
+                flash('Profile updated')
+                return redirect(f'/users/{curr_user.id}')
+            flash('Incorrect Password')
+            return redirect('/edit-user')
+        
+        return render_template('edit-profile.html', form=form)
+
+    else:
+        flash('Must be logged in to do that!')
+        return redirect('/login')
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
     form = LoginForm()
@@ -389,7 +418,6 @@ def show_in_theatres():
     movies = response['results']
     return render_template('now-showing-home.html', movies=movies)
 
-
 # user routes
 
 @app.route('/users/<int:id>')
@@ -397,22 +425,15 @@ def show_user(id):
     user = User.query.get_or_404(id)
     return render_template('user.html', user=user)
 
-@app.route('/users/<int:id>/edit')
-def edit_user(id):
-    user = User.query.get_or_404(id)
-    if g.user.id != id:
-        flash('You are not authorized to edit other profiles.')
-        return redirect(f'/users/{g.user.id}')
-    return render_template('edit_user.html', user=user)
-
 # movie routes
 
 @app.route('/movies/<int:id>')
 def show_movie(id):
     movie = movie_fetch(id)
-    adate = movie['release_date']
-    newdate = datetime.datetime.strptime(adate, '%Y-%m-%d').strftime('%b %d, %Y')
-    movie['formatted_date'] = newdate
+    if movie['release_date'] != '':
+        adate = movie['release_date']
+        newdate = datetime.datetime.strptime(adate, '%Y-%m-%d').strftime('%b %d, %Y')
+        movie['formatted_date'] = newdate
     departments = get_crew_dpts(movie)
     return render_template('movie.html', movie=movie, departments=departments)
 

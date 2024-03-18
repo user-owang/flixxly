@@ -124,6 +124,7 @@ class Movie(db.Model):
     img_url = db.Column(db.String, nullable=True)
     release_date = db.Column(db.Date, nullable=True)
     release_year = db.Column(db.Integer, nullable=True)
+    formatted_date = db.Column(db.String, nullable=True)
     overview = db.Column(db.String, default='No overview available at this time.')
 
 class Person(db.Model):

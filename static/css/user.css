@@ -1,0 +1,74 @@
+.row {
+  padding-top: 60px;
+}
+
+#user-picture-box {
+  padding: 0px;
+  display: flex;
+  width: 220px;
+  max-height: 330px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0px auto;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.edit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 33.6px;
+  background-color: #e53a35;
+  color: #efefef;
+  border-radius: 16.8px;
+  margin: 0px auto;
+}
+
+.name {
+  width: 220px;
+  overflow-wrap: break-word;
+  margin: auto;
+}
+
+img.hidden {
+  display: none;
+}
+
+.movie-card {
+  padding: 15px 15px;
+}
+
+.card-contents {
+  display: flex;
+}
+
+div.text {
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+div.buttons {
+  display: flex;
+}
+
+div.buttons > form {
+  margin-right: 15px;
+}
+
+.card a {
+  color: black;
+}
+
+.card h2 {
+  font-size: 28px;
+}
+
+.bio {
+  width: 220px;
+  margin: 0px auto;
+}

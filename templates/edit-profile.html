@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block title %}Edit {{g.user.username}} profile{%
+endblock %}{%block styling%}
+<link rel="stylesheet" href="/static/css/login-register.css" />{%endblock%}
+{%block content%}
+<div class="row">
+  <div class="container">
+    <div class="box">
+      <h1>Edit Profile</h1>
+      <p>Make changes to the fields below.</p>
+      <form action="/edit-user" method="POST">
+        {{ form.hidden_tag() }} {% for field in form %} {% if
+        field.widget.input_type != 'hidden' %}
+        <p>{{ field.label }} {{ field(class_="form-control") }}</p>
+        <p>
+          <small>{% for error in field.errors %}{{ error }}{% endfor %}</small>
+        </p>
+        {% endif %} {% endfor %}
+        <div class="button-row">
+          <div>
+            <input type="submit" value="Save changes" class="btn btn-primary" />
+          </div>
+          <div>
+            <a class="btn btn-outline-primary" href="/users/{{g.user.id}}">
+              Cancel
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
