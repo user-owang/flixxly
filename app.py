@@ -186,6 +186,48 @@ def user_search(term):
     
     return response
 
+def get_pop_movies(person):
+    dept = person['known_for_department']
+    if dept == 'Acting':
+        def myFunc(e):
+            return e['popularity']
+        acting = person['movie_credits']['cast']
+        acting.sort(reverse=True, key=myFunc)
+        if len(acting) > 8:
+            return acting[:8]
+        else:
+            return acting
+    else:
+        def myFunc(e):
+            if e['department'] != dept:
+                return 0
+            return e['popularity']
+        crewing = person['movie_credits']['crew']
+        crewing.sort(reverse=True, key=myFunc)
+        if len(crewing) > 8:
+            return crewing[:8]
+        else:
+            return crewing
+
+def get_years(person):
+    cast_years = set()
+    crew_years = set()
+    for movie in person['movie_credits']['cast']:
+        if movie['release_date']:
+            cast_years.add(movie['release_date'][:4])
+    
+    for movie in person['movie_credits']['crew']:
+        if movie['release_date']:
+            crew_years.add(movie['release_date'][:4])
+    
+    cast_years = list(cast_years)
+    crew_years = list(crew_years)
+
+    cast_years.sort(reverse=True)
+    crew_years.sort(reverse=True)
+
+    return {'cast':  cast_years, 'crew': crew_years}    
+
 # api routes
 
 @app.route('/api/release-radar', methods=['POST'])
@@ -196,7 +238,7 @@ def rr_np():
     for person in g.user.follows:
         follows.append(str(person.id))
     response = get_new_movies(follows, data['page'])
-    # convert_date(response, 'release_date')
+    convert_date(response, 'release_date')
     return jsonify(response)
 
 @app.route('/api/past-films', methods=['POST'])
@@ -207,7 +249,7 @@ def pf_np():
     for person in g.user.follows:
         follows.append(str(person.id))
     response = get_old_movies(follows, data['page'])
-    # convert_date(response, 'release_date')
+    convert_date(response, 'release_date')
     return jsonify(response)
 
 @app.route('/api/now-showing', methods=['POST'])
@@ -215,7 +257,7 @@ def ns_np():
     """Returns json object with input page of results for movies currently in theatres."""
     data = request.get_json()
     response = get_now_showing(data['page'])
-    # convert_date(response, 'release_date')
+    convert_date(response, 'release_date')
     return jsonify(response)
 
 @app.route('/api/search-results', methods=['POST'])
@@ -528,7 +570,14 @@ def show_person(id):
         age = find_age(input)
     if person.get('gender'):
         gender = return_gender(person)
-    return render_template('person.html', person=person, birthdate=birthdate, age=age, gender=gender)
+    pop_movies = get_pop_movies(person)
+    release_years = get_years(person)
+    def myFunc(e):
+        return e['release_date']
+    person['movie_credits']['cast'].sort(reverse=True, key=myFunc)
+    person['movie_credits']['crew'].sort(reverse=True, key=myFunc)
+
+    return render_template('person.html', person=person, birthdate=birthdate, age=age, gender=gender, release_years=release_years, pop_movies=pop_movies)
 
 @app.route('/people/add-follow/<int:id>', methods=['POST'])
 def add_follow(id):

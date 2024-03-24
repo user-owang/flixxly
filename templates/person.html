@@ -1,13 +1,23 @@
 {% extends 'base.html' %} {%block title%}{{person['name']}}{%endblock%} {%block
-content%}
+styling%} <link rel="stylesheet" href="/static/css/person.css" /> {%endblock%}
+{%block content%}
 <div class="container">
   <div class="row">
-    <aside>
+    <aside class="col-md-3">
       <div>
-        <div class="person_picture">insert picture here</div>
+        {% if person['profile_path'] %}
+        <img
+          src="https://media.themoviedb.org/t/p/w220_and_h330_face{{ person['profile_path'] }}"
+          alt=""
+        />
+        {%else%}
+        <div class="no-profile"></div>
+        {%endif%}
       </div>
+    </aside>
+    <div class="col-md-9">
       <div>
-        <div><p>{{person['name']}}</p></div>
+        <div><h1>{{person['name']}}</h1></div>
         <div>
           {% if g.user %} {% if g.user.is_following(person['id']) %}
           <form method="POST" action="/people/remove-follow/{{ person.id }}">
@@ -20,75 +30,221 @@ content%}
           {% endif %} {% endif %}
         </div>
       </div>
-    </aside>
-    <div class="contents">
-      <div class="header">
-        <span
-          ><button class="tablinks" id="basic-info">Basic Info</button></span
+    </div>
+    <div class="row">
+      <ul class="nav nav-tabs nav-justified">
+        <li class="nav-item">
+          <div
+            class="nav-link active"
+            data-bs-toggle="tab"
+            data-bs-target="#info-tab-pane"
+            id="info-tab"
+          >
+            Basic Info
+          </div>
+        </li>
+        <li class="nav-item">
+          <div
+            class="nav-link"
+            id="film-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#film-tab-pane"
+          >
+            Filmography
+          </div>
+        </li>
+      </ul>
+      <div class="display">
+        <div
+          class="tab-pane fade show active"
+          id="info-tab-pane"
+          role="tabpanel"
+          aria-labelledby="info-tab"
+          tabindex="0"
         >
-        <span
-          ><button class="tablinks" id="filmography">Filmography</button></span
+          <h2>Biography</h2>
+          <p>{{person['biography']}}</p>
+          <div class="other-info">
+            <div>
+              <div>
+                <b>Birthday</b>
+                <p>{{birthdate}} ({{age}})</p>
+              </div>
+              <div>
+                <b>Place of Birth</b>
+                <p>{{person['place_of_birth']}}</p>
+              </div>
+              <div>
+                <b>Gender</b>
+                <p>{{gender}}</p>
+              </div>
+              <div>
+                <b>Known For</b>
+                <p>{{person['known_for_department']}}</p>
+              </div>
+            </div>
+            {% if person['also_known_as'] %}
+            <div class="aka">
+              <b>Also known as:</b>
+              <p>
+                {% for name in person['also_known_as']%} {% if
+                person['also_known_as'].index(name) == 0%} {{name}} {%else%} ,
+                {{name}} {%endif%} {% endfor %}
+              </p>
+            </div>
+            {%endif%}
+          </div>
+          {% if pop_movies %}
+          <h2>Popular Films</h2>
+          <div class="known-films">
+            <div class="scroll-content">
+              {% for movie in pop_movies %}
+              <div class="movie-tile">
+                <a href="/movies/{{movie['id']}}">
+                  {% if movie['poster_path']%}
+                  <img
+                    src="https://media.themoviedb.org/t/p/w150_and_h225_face{{movie['poster_path']}}"
+                    alt=""
+                  />
+                  {%else%}
+                  <div class="no-poster"></div>
+                  {%endif%}
+                </a>
+                <div class="about">
+                  <a href="/movies/{{movie['id']}}"> {{movie['title']}} </a>
+                </div>
+              </div>
+              {% endfor %}
+              <div class="more-tile">
+                <ul class="nav nav-tabs nav-justified">
+                  <li class="nav-item">
+                    <div
+                      class="nav-link"
+                      id="film-btn"
+                      data-bs-toggle="tab"
+                      data-bs-target="#film-tab-pane"
+                    >
+                      See all credits
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          {%endif%}
+        </div>
+        <div
+          class="tab-pane fade"
+          id="film-tab-pane"
+          role="tabpanel"
+          aria-labelledby="film-tab"
+          tabindex="0"
         >
-        <span><button class="tablinks" id="crew">Crew</button></span>
-      </div>
-      <div class="info hidden">
-        <h2>Basic Info</h2>
-        <div>
-          <div>
-            <h3>Birthday</h3>
-            <p>{{birthdate}} ({{age}})</p>
-          </div>
-          <div>
-            <h3>Gender</h3>
-            <p>{{gender}}</p>
-          </div>
-          <div>
-            <h3>Known For</h3>
-            <p>{{person['known_for_department']}}</p>
-          </div>
-        </div>
-        <h3>Biography</h3>
-        <p>{{person['biography']}}</p>
-        <h3>Also known as:</h3>
-        <p>
-          <ul>
-            {% for name in person['also_known_as']%}
-            <li>{{name}}</li>
-            {% endfor %}
-          </ul>
-        </p>
-      </div>
-      <div class="filmography hidden">
-        <h2>Filmography</h2>
-        <div>
-          <h3>Cast</h3>
-          <ul>
-            {% for movie in person['movie_credits']['cast'] %}
-            <li>
-              <div>
-                <h4><a href="/movies/{{movie['id']}}">{{movie['title']}} ({{movie['release_date'][:4]}})</a></h4>
-                <small>as {{movie['character']}}</small>
+          <h2>Filmography</h2>
+          <div class="cast-films">
+            <h3>Acting</h3>
+            <div class="year-block">
+              <h4>TBA</h4>
+              <div class="film-bullets">
+                <ul>
+                  {% for movie in person['movie_credits']['cast'] if
+                  movie['release_date'] == '' %}
+                  <li>
+                    <div>
+                      <div>
+                        <a href="/movies/{{movie['id']}}">
+                          <b>{{movie['title']}}</b>
+                        </a>
+                      </div>
+                      {% if movie['character'] %}
+                      <small>as {{movie['character']}}</small>
+                      {%endif%}
+                    </div>
+                  </li>
+                  {%endfor%}
+                </ul>
               </div>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-        <div>
-          <h3>Crew</h3>
-          <ul>
-            {% for movie in person['movie_credits']['crew'] %}
-            <li>
-              <div>
-                <h4><a href="/movies/{{movie['id']}}">{{movie['title']}} ({{movie['release_date'][:4]}})</a></h4>
-                <small>...{{movie['job']}}</small>
+            </div>
+            {% for year in release_years['cast'] %}
+            <div class="year-block">
+              <h4>{{year}}</h4>
+              <div class="film-bullets">
+                <ul>
+                  {% for movie in person['movie_credits']['cast'] if
+                  movie['release_date'][:4] == year %}
+                  <li>
+                    <div>
+                      <div>
+                        <a href="/movies/{{movie['id']}}">
+                          <b>{{movie['title']}}</b>
+                        </a>
+                      </div>
+                      {% if movie['character'] %}
+                      <small>as {{movie['character']}}</small>
+                      {%endif%}
+                    </div>
+                  </li>
+                  {%endfor%}
+                </ul>
               </div>
-            </li>
+            </div>
             {% endfor %}
-          </ul>
+          </div>
+          {% if person['movie_credits']['crew']%}
+          <div class="crew-films">
+            <h3>Crew</h3>
+            <div class="year-block">
+              <h4>TBA</h4>
+              <div class="film-bullets">
+                <ul>
+                  {% for movie in person['movie_credits']['crew'] if
+                  movie['release_date'] == '' %}
+                  <li>
+                    <div>
+                      <div>
+                        <a href="/movies/{{movie['id']}}">
+                          <b>{{movie['title']}}</b>
+                        </a>
+                      </div>
+                      {% if movie['job'] %}
+                      <small>... {{movie['job']}}</small>
+                      {%endif%}
+                    </div>
+                  </li>
+                  {%endfor%}
+                </ul>
+              </div>
+            </div>
+            {% for year in release_years['crew'] %}
+            <div class="year-block">
+              <h4>{{year}}</h4>
+              <div class="film-bullets">
+                <ul>
+                  {% for movie in person['movie_credits']['crew'] if
+                  movie['release_date'][:4] == year %}
+                  <li>
+                    <div>
+                      <div>
+                        <a href="/movies/{{movie['id']}}">
+                          <b>{{movie['title']}}</b>
+                        </a>
+                      </div>
+                      {% if movie['job'] %}
+                      <small>... {{movie['job']}}</small>
+                      {%endif%}
+                    </div>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+          {%endif%}
         </div>
       </div>
-      <div class="crew hidden"></div>
     </div>
   </div>
+  <script src="/static/js/person.js"></script>
+  {%endblock%}
 </div>
-{%endblock%}

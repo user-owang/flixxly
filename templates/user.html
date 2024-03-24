@@ -12,170 +12,246 @@ content%}
         >
           <img id="user-picture" class="hidden" src="{{user.img_url}}" alt="" />
         </div>
-        <div>
-          <div class="name">
-            <h1><b>{{user.username}}</b></h1>
-          </div>
-          <div class="bio">
-            <p>{{user.bio}}</p>
-          </div>
-          {% if user.id == g.user.id %}
-          <a href="/edit-user"><div class="edit-button">Edit Profile</div></a>
-          {% endif %}
-        </div>
+        {% if user.id == g.user.id %}
+        <a href="/edit-user"><div class="edit-button">Edit Profile</div></a>
+        {% endif %}
       </div>
     </aside>
-    <div class="col-md-9 contents">
-      <div class="header">
-        <span
-          ><button class="tablinks selected" id="watchlist">
-            Watchlist
-          </button></span
-        >
-        <span><button class="tablinks" id="seenlist">Seenlist</button></span>
-        <span><button class="tablinks" id="following">Following</button></span>
+    <div class="col-md-9">
+      <div>
+        <div class="name">
+          <h1><b>{{user.username}}</b></h1>
+        </div>
+        <div class="bio">
+          <p>{{user.bio}}</p>
+        </div>
       </div>
-      <div class="following hidden">
-        {% if user.follows %} {% for person in user.follows %}
-        <div class="card person-card">
-          <div class="card-contents">
-            <a href="/people/{{person.id}}">
-              <div class="person-picture"></div>
-            </a>
-            <div class="text">
-              <div class="top-card">
+    </div>
+    <div class="row">
+      <div class="contents">
+        <ul class="nav nav-tabs nav-justified">
+          <li class="nav-item">
+            <div class="nav-link active" data-bs-toggle="tab" data-bs-target="#watchlist-tab-pane"" id="watchlist">Watchlist</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link" id="seenlist" data-bs-toggle="tab" data-bs-target="#seenlist-tab-pane">Seenlist</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link" id="following" data-bs-toggle="tab" data-bs-target="#following-tab-pane">Following</div>
+          </li>
+        </ul>
+        <div class="display">
+          <div
+            class="tab-pane fade"
+            id="following-tab-pane"
+            role="tabpanel"
+            aria-labelledby="following-tab"
+            tabindex="0"
+          >
+            {% if user.follows %} {% for person in user.follows %}
+            <div class="card person-card">
+              <div class="card-contents">
                 <a href="/people/{{person.id}}">
-                  <div>{{person.name}}</div>
+                  {% if person.img_url %}
+                  <img
+                    src="https://media.themoviedb.org/t/p/w100_and_h100_face{{person.img_url}}"
+                    alt=""
+                  />
+                  {%else%}
+                  <div class="no-profile"></div>
+                  {%endif%}
                 </a>
-                <div>
-                  {% if g.user.is_following(person.id) %}
-                  <form
-                    method="POST"
-                    action="/people/remove-follow/{{ person.id }}"
-                  >
-                    <button class="btn btn-outline-primary btn-sm">
-                      Unfollow
-                    </button>
-                  </form>
-                  {% else %}
-                  <form
-                    method="POST"
-                    action="/people/add-follow/{{ person.id }}"
-                  >
-                    <button class="btn btn-primary btn-sm">Follow</button>
-                  </form>
-                  {% endif %}
+                <div class="text">
+                  <div class="top-card">
+                    <a href="/people/{{person.id}}">
+                      <div>
+                        <h2>{{person.name}}</h2>
+                      </div>
+                    </a>
+                    <div>
+                      <small>Known for: {{person.known_for}}</small>
+                    </div>
+                  </div>
+                  {% if g.user %}
+                  <div class="bottom-card">
+                    {% if g.user.is_following(person.id) %}
+                    <form
+                      method="POST"
+                      action="/people/remove-follow/{{ person.id }}"
+                    >
+                      <button class="btn btn-outline-primary btn-sm">
+                        Unfollow
+                      </button>
+                    </form>
+                    {% else %}
+                    <form
+                      method="POST"
+                      action="/people/add-follow/{{ person.id }}"
+                    >
+                      <button class="btn btn-primary btn-sm">Follow</button>
+                    </form>
+                    {% endif %}
+                  </div>
+                  {%endif%}
                 </div>
               </div>
-              <div class="bottom-card">Known for: {{person.known_for}}</div>
             </div>
+            {% endfor %} {% endif %}
           </div>
-        </div>
-        {% endfor %} {% endif %}
-      </div>
-      <div class="watchlist">
-        {% if user.watchlist %} {% for movie in user.watchlist %}
-        <div class="card movie-card">
-          <div class="card-contents">
-            <a href="/movies/{{movie.id}}">
-              {% if movie.img_url %}
-              <img
-                src="https://media.themoviedb.org/t/p/w94_and_h141_bestv2{{ movie.img_url }}"
-                alt=""
-              />
-              {%else%}
-              <div class="no-poster"></div>
-              {%endif%}
-            </a>
-            <div class="text">
-              <div class="top-card">
+          <div
+            class="tab-pane fade show active"
+            id="watchlist-tab-pane"
+            role="tabpanel"
+            aria-labelledby="watchlist-tab"
+            tabindex="0"
+          >
+            {% if user.watchlist %} {% for movie in user.watchlist %}
+            <div class="card movie-card">
+              <div class="card-contents">
                 <a href="/movies/{{movie.id}}">
-                  <div><h2>{{movie.title}}</h2></div>
+                  {% if movie.img_url %}
+                  <img
+                    src="https://media.themoviedb.org/t/p/w94_and_h141_bestv2{{ movie.img_url }}"
+                    alt=""
+                  />
+                  {%else%}
+                  <div class="no-poster"></div>
+                  {%endif%}
                 </a>
-                <p><small>{{movie.formatted_date}}</small></p>
-              </div>
-              <div class="bottom-card">
-                <div class="buttons">
-                  {% if g.user.is_watching(movie.id) %}
-                  <form
-                    method="POST"
-                    action="/movies/remove-watchlist/{{ movie.id }}"
-                  >
-                    <button class="btn btn-outline-primary btn-sm">
-                      Remove
-                    </button>
-                  </form>
-                  {% else %}
-                  <form
-                    method="POST"
-                    action="/movies/add-watchlist/{{ movie.id }}"
-                  >
-                    <button class="btn btn-primary btn-sm">Watchlist</button>
-                  </form>
-                  {% endif %}
-                  <form
-                    action="/movies/add-seenlist/{{ movie.id }}"
-                    method="POST"
-                  >
-                    <button class="btn btn-primary btn-sm" id="add-seen">
-                      Seen it
-                    </button>
-                  </form>
+                <div class="text">
+                  <div class="top-card">
+                    <a href="/movies/{{movie.id}}">
+                      <div><h2>{{movie.title}}</h2></div>
+                    </a>
+                    <p><small>{{movie.formatted_date}}</small></p>
+                  </div>
+                  <div class="bottom-card">
+                    {% if g.user %}
+                    <div class="buttons">
+                      {% if g.user.is_watching(movie.id) %}
+                      <form
+                        method="POST"
+                        action="/movies/remove-watchlist/{{ movie.id }}"
+                      >
+                        <button class="btn btn-outline-primary btn-sm">
+                          Remove
+                        </button>
+                      </form>
+                      {% else %}
+                      <form
+                        method="POST"
+                        action="/movies/add-watchlist/{{ movie.id }}"
+                      >
+                        <button class="btn btn-primary btn-sm">
+                          Watchlist
+                        </button>
+                      </form>
+                      {% endif %}
+                      {% if g.user.has_seen(movie.id) %}
+                      <form
+                        method="POST"
+                        action="/movies/remove-seenlist/{{ movie.id }}"
+                      >
+                        <button class="btn btn-outline-primary btn-sm">
+                          Remove
+                        </button>
+                      </form>
+                      {% else %}
+                      <form
+                        method="POST"
+                        action="/movies/add-seenlist/{{ movie.id }}"
+                      >
+                        <button class="btn btn-primary btn-sm" id="add-seen">
+                          Seen it
+                        </button>
+                      </form>
+                      {% endif %}
+                    </div>
+                    {%endif%}
+                  </div>
                 </div>
               </div>
             </div>
+            {% endfor %} {% endif %}
           </div>
-        </div>
-        {% endfor %} {% endif %}
-      </div>
-      <div class="seenlist hidden">
-        {% if user.seenlist %} {% for movie in user.seenlist %}
-        <div class="card movie-card">
-          <div class="card-contents">
-            <a href="/movies/{{movie.id}}">
-              {% if movie.img_url %}
-              <img
-                src="https://media.themoviedb.org/t/p/w94_and_h141_bestv2{{ movie.img_url }}"
-                alt=""
-              />
-              {%else%}
-              <div class="no-poster"></div>
-              {%endif%}
-            </a>
-            <div class="text">
-              <div class="top-card">
+          <div
+            class="tab-pane fade"
+            id="seenlist-tab-pane"
+            role="tabpanel"
+            aria-labelledby="seenlist-tab"
+            tabindex="0"
+          >
+            {% if user.seenlist %} {% for movie in user.seenlist %}
+            <div class="card movie-card">
+              <div class="card-contents">
                 <a href="/movies/{{movie.id}}">
-                  <div><h2>{{movie.title}}</h2></div>
+                  {% if movie.img_url %}
+                  <img
+                    src="https://media.themoviedb.org/t/p/w94_and_h141_bestv2{{ movie.img_url }}"
+                    alt=""
+                  />
+                  {%else%}
+                  <div class="no-poster"></div>
+                  {%endif%}
                 </a>
-                <p><small>{{movie.release_date}}</small></p>
-              </div>
-              <div class="bottom-card">
-                <div class="buttons">
-                  {% if g.user.has_seen(movie.id) %}
-                  <form
-                    method="POST"
-                    action="/movies/remove-seenlist/{{ movie.id }}"
-                  >
-                    <button class="btn btn-outline-primary btn-sm">
-                      Remove
-                    </button>
-                  </form>
-                  {% else %}
-                  <form
-                    method="POST"
-                    action="/movies/add-seenlist/{{ movie.id }}"
-                  >
-                    <button class="btn btn-primary btn-sm" id="add-seen">
-                      Seen it
-                    </button>
-                  </form>
-                  {% endif %}
+                <div class="text">
+                  <div class="top-card">
+                    <a href="/movies/{{movie.id}}">
+                      <div><h2>{{movie.title}}</h2></div>
+                    </a>
+                    <p><small>{{movie.release_date}}</small></p>
+                  </div>
+                  <div class="bottom-card">
+                    {% if g.user %}
+                    <div class="buttons">
+                      {%if g.user.id != user.id%}
+                      {% if g.user.is_watching(movie.id) %}
+                      <form
+                        method="POST"
+                        action="/movies/remove-watchlist/{{ movie.id }}"
+                      >
+                        <button class="btn btn-outline-primary btn-sm">
+                          Remove
+                        </button>
+                      </form>
+                      {% else %}
+                      <form
+                        method="POST"
+                        action="/movies/add-watchlist/{{ movie.id }}"
+                      >
+                        <button class="btn btn-primary btn-sm">
+                          Watchlist
+                        </button>
+                      </form>
+                      {% endif %} {%endif%}
+                      {% if g.user.has_seen(movie.id) %}
+                      <form
+                        method="POST"
+                        action="/movies/remove-seenlist/{{ movie.id }}"
+                      >
+                        <button class="btn btn-outline-primary btn-sm">
+                          Remove
+                        </button>
+                      </form>
+                      {% else %}
+                      <form
+                        method="POST"
+                        action="/movies/add-seenlist/{{ movie.id }}"
+                      >
+                        <button class="btn btn-primary btn-sm" id="add-seen">
+                          Seen it
+                        </button>
+                      </form>
+                      {% endif %}
+                    </div>
+                    {%endif%}
+                  </div>
                 </div>
               </div>
             </div>
+            {% endfor %} {% endif %}
           </div>
         </div>
-        {% endfor %} {% endif %}
       </div>
     </div>
   </div>

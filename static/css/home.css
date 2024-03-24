@@ -1,0 +1,165 @@
+.row {
+  margin-top: 60px;
+}
+
+.no-poster {
+  width: 220px;
+  height: 330px;
+  background-color: white;
+  background-image: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  outline-width: 1px;
+  outline-style: solid;
+  outline-color: #d5d5d5;
+}
+
+.no-profile {
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg");
+  outline-color: #d5d5d5;
+  outline-width: 1px;
+  outline-style: solid;
+  outline-color: #d5d5d5;
+}
+
+aside.col-md-3 {
+  padding-top: 70px;
+}
+
+.tabber {
+  font-size: 24px;
+  padding: 10px 20px;
+}
+
+.tabber i {
+  margin-right: 10px;
+}
+
+a {
+  color: black;
+}
+
+.tabber:hover {
+  color: #e53a35;
+  background-color: #efefef;
+}
+
+.card {
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.card-contents {
+  display: flex;
+}
+
+.text {
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px 0px;
+}
+
+.buttons {
+  margin-top: 10px;
+  display: flex;
+}
+
+.buttons form {
+  margin-right: 10px;
+}
+
+.text p {
+  margin-bottom: 0px;
+}
+
+.text h3 {
+  margin-bottom: 0px;
+}
+
+.text a div {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.container {
+  max-width: 1500px;
+}
+
+.card-contents a:hover {
+  color: #e53a35;
+}
+
+section.trending-movies {
+  margin-top: 40px;
+  padding: 30px;
+  padding-bottom: 15px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  height: 800px;
+  overflow-y: scroll;
+  margin-bottom: 60px;
+}
+
+section.trending-people {
+  margin-top: 40px;
+  padding: 30px;
+  padding-bottom: 15px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  height: 800px;
+  overflow-y: scroll;
+  margin-bottom: 60px;
+}
+
+.tab-pane.fade {
+  display: none;
+}
+
+.tab-pane.fade.active {
+  display: block;
+}
+
+ul.nav .nav-link.active {
+  border-color: black;
+  border-bottom-color: white;
+  background-color: white;
+  color: #e53a35;
+  font-weight: bold;
+}
+
+ul.nav .nav-link.active:hover {
+  border-bottom-color: white;
+}
+
+ul.nav .nav-link {
+  border-bottom-color: black;
+  color: black;
+}
+
+ul.nav .nav-link:hover {
+  border-bottom-color: black;
+}
+
+section.now-showing-movies {
+  margin-top: 40px;
+  padding: 30px;
+  padding-bottom: 15px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  height: 800px;
+  overflow-y: scroll;
+  margin-bottom: 60px;
+}

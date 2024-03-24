@@ -2,32 +2,38 @@
 content%}
 <div class="container">
   <div class="row">
-    <aside>
+    <aside class="col-md-3">
       {% if g.user %}
-      <div>
-        <a href="/" class="tablinks selected" id="Following">Following</a>
-      </div>
+      <a href="/" id="Following">
+        <div id="following-tab" class="tabber">
+          <i class="bi bi-rss-fill"></i> Following
+        </div>
+      </a>
       {% endif %}
-      <div>
-        <a href="/trending-movies" class="tablinks" id="trending-movies"
-          >Trending Movies</a
-        >
-      </div>
-      <div>
-        <a href="/trending-people" class="tablinks" id="trending-people"
-          >Trending People</a
-        >
-      </div>
-      <div>
-        <a href="/in-theatres" class="tablinks" id="in-theatres">In Theatres</a>
-      </div>
+      <a href="/trending-movies" id="trending-movies">
+        <div id="tm-tab" class="tabber">
+          <i class="bi bi-camera-reels"></i> Trending Movies
+        </div>
+      </a>
+      <a href="/trending-people" id="trending-people">
+        <div id="tp-tab" class="tabber">
+          <i class="bi bi-person-up"></i> Trending People
+        </div>
+      </a>
+      <a href="/in-theatres" id="in-theatres">
+        <div id="theatres-tab" class="tabber">
+          <i class="bi bi-ticket-perforated"></i> In Theatres
+        </div>
+      </a>
       {% if g.user %}
-      <div>
-        <a class="tablinks" href="/users/{{g.user.id}}">Profile</a>
-      </div>
+      <a href="/users/{{g.user.id}}">
+        <div id="profile-tab" class="tabber">
+          <i class="bi bi-file-person"></i> Profile
+        </div>
+      </a>
       {% endif %}
     </aside>
-    <div class="contents">{% block display %} {% endblock %}</div>
+    <div class="col-md-9 contents">{% block display %} {% endblock %}</div>
   </div>
 </div>
 {%endblock%}

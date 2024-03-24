@@ -55,7 +55,7 @@ function buildMovieCard(response, container, displaySeenlistBtn, URLprefix) {
       if (movie["poster_path"]) {
         image = `<img src="${URLprefix}${movie["poster_path"]}" alt=""/>`;
       }
-      let watchBtn;
+      let watchBtn = "";
       if (currUserWatch["user"]) {
         watchBtn = `<form
         method="POST"
@@ -74,7 +74,7 @@ function buildMovieCard(response, container, displaySeenlistBtn, URLprefix) {
         </form>`;
         }
       }
-      let seenBtn;
+      let seenBtn = "";
       if (currUserSeen["user"]) {
         console.log("make seenBtn");
         seenBtn = `<form
@@ -110,14 +110,13 @@ function buildMovieCard(response, container, displaySeenlistBtn, URLprefix) {
               <a href="/movies/${movie["id"]}">
                 <div><h3>${movie["title"]}</h3></div>
               </a>
-              <div>
+              <p><small>${movie["formatted_date"]}</small></p>
+              <div class="buttons">
                 ${watchBtn}
                 ${seenBtn}
               </div>
             </div>
             <div class="bottom-card">
-              <p><small>${movie["formatted_date"]}</small></p>
-              <p></p>
               <p>${movie["overview"]}</p>
             </div>
           </div>
@@ -135,7 +134,7 @@ function buildPersonCard(response, container, URLprefix) {
       if (person["profile_path"]) {
         image = `<img src='${URLprefix}${person["profile_path"]}' alt=""/>`;
       }
-      let followBtn;
+      let followBtn = "";
       if (currUserFollows["user"]) {
         followBtn = `
         <form
@@ -158,7 +157,7 @@ function buildPersonCard(response, container, URLprefix) {
       }
       let KFmovies = "";
       for (let movie of person["known_for"]) {
-        if (person["known_for"].indexOf(movie) == 0) {
+        if ((KFmovies = "")) {
           KFmovies += `<a href="/movies/${movie["id"]}">${movie["title"]}</a>`;
         } else {
           KFmovies += `, <a href="/movies/${movie["id"]}">${movie["title"]}</a>`;
@@ -182,9 +181,9 @@ function buildPersonCard(response, container, URLprefix) {
             </div>
             <div class="bottom-card">
               <div>Known for: ${person["known_for_department"]}</div>
-              <small>
+              <div>
                 ${KFmovies}
-              </small>
+              </div>
             </div>
           </div>
         </div>

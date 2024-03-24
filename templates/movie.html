@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {%block title%}{{movie['title']}}{%endblock%} {%block
+{% extends 'base.html' %} {%block title%}{{movie['title']}}{%endblock%}
+{%block styling%}
+<link rel="stylesheet" href="/static/css/movie.css" />{%endblock%} {%block
 content%}
 <div class="container">
   <div class="row">
@@ -13,9 +15,17 @@ content%}
         <div class="no-poster"></div>
         {%endif%}
       </div>
-      <div>
-        <div><p>{{movie['title']}}</p></div>
-        <div>
+    </aside>
+    <div class="col-md-9">
+      <div class="title-banner">
+        <div class="title">
+          <h1>{{movie['title']}}</h1>
+          <div class="quick-info">
+            <p>{{movie['formatted_date']}}</p>
+            <p>({{(movie['runtime']//60)}}h {{movie['runtime']%60}}m)</p>
+          </div>
+        </div>
+        <div class="action-buttons">
           {% if g.user %} {% if g.user.is_watching(movie['id']) %}
           <form
             method="POST"
@@ -47,50 +57,193 @@ content%}
           {% endif %} {% endif %}
         </div>
       </div>
-    </aside>
-    <div class="col-md-9 contents">
-      <div class="header">
-        <span><button class="tablinks" id="overview">Overview</button></span>
-        <span><button class="tablinks" id="cast">Cast</button></span>
-        <span><button class="tablinks" id="crew">Crew</button></span>
-      </div>
-      <div class="overview hidden">
+    </div>
+  </div>
+  <div class="row">
+    <ul class="nav nav-tabs nav-justified">
+      <li class="nav-item">
+        <div class="nav-link active" data-bs-toggle="tab" data-bs-target="#overview-tab-pane"" id="overview-tab">Overview</div>
+      </li>
+      <li class="nav-item">
+        <div class="nav-link" id="cast-tab" data-bs-toggle="tab" data-bs-target="#cast-tab-pane">Cast</div>
+      </li>
+      <li class="nav-item">
+        <div class="nav-link" id="crew-tab" data-bs-toggle="tab" data-bs-target="#crew-tab-pane">Crew</div>
+      </li>
+    </ul>
+    <div class="display">
+      <div
+        class="tab-pane fade show active"
+        id="overview-tab-pane"
+        role="tabpanel"
+        aria-labelledby="overview-tab"
+        tabindex="0"
+      >
         <h2>Overview</h2>
         <p>{{movie['overview']}}</p>
-        <h3>Genres</h3>
-        <p>{% for genre in movie['genres']%} {% endfor %}</p>
+        <div class="row">
+          <div class="col-md-9">
+            <div class="overview-info">
+              <div>
+                <b>Genres</b>
+                <p>
+                  {% for genre in movie['genres']%}
+                  {% if movie['genres'].index(genre) == 0 %}
+                  {{genre['name']}}
+                  {%else%}
+                  , {{genre['name']}}
+                  {%endif%}
+                  {% endfor %}
+                </p>
+              </div>
+              {% if movie['production_companies'] %}
+              <div>
+                <b>Production companies</b>
+                <p>
+                  {% for company in movie['production_companies'] %}
+                  {% if movie['production_companies'].index(company) == 0 %}
+                  {{company['name']}} ({{company['origin_country']}})
+                  {%else%}
+                  , {{company['name']}} ({{company['origin_country']}})
+                  {%endif%}
+                  {%endfor%}
+                </p>
+              </div>
+              {%endif%}
+              {% if movie['spoken_languages'] %}
+              <div>
+                <b>Spoken Languages</b>
+                <p>
+                  {% for lang in movie['spoken_languages'] %}
+                  {% if movie['spoken_languages'].index(lang) == 0 %}
+                  {{lang['name']}}
+                  {%else%}
+                  , {{lang['name']}}
+                  {%endif%}
+                  {%endfor%}
+                </p>
+              </div>
+              {%endif%}
+          </div>
+        </div>
+          <div class="col-md-3">
+            <div class="overview-info">
+              <div>
+                <b>Status</b>
+                <p>{{movie['status']}}</p>
+              </div>
+              <div>
+                <b>Budget</b>
+                <p>${{movie['budget']}}</p>
+              </div>
+              <div>
+                <b>Revenue</b>
+                <p>${{movie['revenue']}}</p>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+        <div>
+          <h3>Top Billed Cast</h3>
+          <div class="stars">
+            <div  class="scroll-content">
+              {% for person in movie['credits']['cast'] %}
+              {% if loop.index <= 9 %}
+              <div class="person-tile">
+                <a href="/people/{{person['id']}}">
+                  {% if person['profile_path']%}
+                  <img
+                    src="https://media.themoviedb.org/t/p/w138_and_h175_face{{person['profile_path']}}"
+                    alt=""
+                  />
+                  {%else%}
+                  <div class="no-profile-lg"></div>
+                  {%endif%}
+                </a>
+                <div class="about">
+                  <a href="/people/{{person['id']}}">
+                    <b>{{person['name']}}</b>
+                  </a>
+                  <p>{{person['character']}}</p>
+                </div>
+              </div>
+              {%endif%}
+              {% endfor %}
+              <div class="more-tile">
+                <ul class="nav nav-tabs nav-justified">
+                  <li class="nav-item">
+                    <div class="nav-link" id="cast-btn" data-bs-toggle="tab" data-bs-target="#cast-tab-pane">See full cast</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="cast hidden">
+      <div class="tab-pane fade" id="cast-tab-pane" role="tabpanel" aria-labelledby="cast-tab" tabindex="0">
         <h2>Cast</h2>
+        <ul class="cast-list">
         {% for person in movie['credits']['cast'] %}
         <li>
-          <div>insert actor picture here</div>
+          <div class="cast-item">
           <div>
+            <a href="/people/{{person['id']}}">
+              {% if person['profile_path'] %}
+              <img
+                src="https://media.themoviedb.org/t/p/w66_and_h66_face{{person['profile_path']}}"
+                alt=""
+              />
+              {%else%}
+              <div class="no-profile"></div>
+              {%endif%}
+            </a>
+          </div>
+          <div class="role">
             <h4><a href="/people/{{person['id']}}">{{person['name']}}</a></h4>
             <small>as {{person['character']}}</small>
           </div>
+        </div>
         </li>
         {% endfor %}
+        </ul>
       </div>
-      <div class="crew hidden">
-        <h2>Crew</h2>
+      <div class="tab-pane fade" id="crew-tab-pane" role="tabpanel" aria-labelledby="crew-tab" tabindex="0">
         {% for dpt in departments %}
-        <h3>{{dpt}}</h3>
-        <ul>
+        <div class="dpt">
+        <h2>{{dpt}}</h2>
+        <ul class="cast-list">
           {% for member in movie['credits']['crew']%} {% if member['department']
           == dpt %}
           <li>
-            <div>insert crew picture here</div>
+            <div class="cast-item">
             <div>
-              <h4><a href="/people/{{member['id']}}">{{member['name']}}</a></h4>
+              <a href="/people/{{member['id']}}">
+                {% if member['profile_path'] %}
+                <img
+                  src="https://media.themoviedb.org/t/p/w66_and_h66_face{{member['profile_path']}}"
+                  alt=""
+                />
+                {%else%}
+                <div class="no-profile"></div>
+                {%endif%}
+              </a>
+            </div>
+            <div class="role">
+              <h4>
+                <a href="/people/{{member['id']}}">{{member['name']}}</a>
+              </h4>
               <small>...{{member['job']}}</small>
             </div>
+          </div>
           </li>
           {% endif %} {% endfor %}
         </ul>
+      </div>
         {% endfor %}
       </div>
     </div>
   </div>
 </div>
+<script src="/static/js/movie.js"></script>
 {%endblock%}

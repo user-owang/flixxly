@@ -1,0 +1,22 @@
+.display {
+  padding: 0px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  border-top-style: none;
+  margin-bottom: 60px;
+}
+
+#rr-tab-pane {
+  padding: 30px;
+  padding-bottom: 15px;
+  height: 800px;
+  overflow-y: scroll;
+}
+
+#pf-tab-pane {
+  padding: 30px;
+  padding-bottom: 15px;
+  height: 800px;
+  overflow-y: scroll;
+}

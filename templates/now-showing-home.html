@@ -1,4 +1,7 @@
-{% extends 'home.html' %} {%block display%}
+{% extends 'home.html' %} {%block styling%}
+<link rel="stylesheet" href="/static/css/home.css" />
+<link rel="stylesheet" href="/static/css/following-home.css" />
+{%endblock%} {%block display%}
 <section class="now-showing-movies">
   <h2>In Theatres Now</h2>
   {% for movie in movies %}
@@ -19,7 +22,8 @@
           <a href="/movies/{{movie['id']}}">
             <div><h3>{{movie['title']}}</h3></div>
           </a>
-          <div>
+          <p><small>{{movie['formatted_date']}}</small></p>
+          <div class="buttons">
             {% if g.user %} {% if g.user.is_watching(movie['id']) %}
             <form
               method="POST"
@@ -51,8 +55,6 @@
           </div>
         </div>
         <div class="bottom-card">
-          <p><small>{{movie['formatted_date']}}</small></p>
-          <p></p>
           <p>{{movie['overview']}}</p>
         </div>
       </div>

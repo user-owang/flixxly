@@ -5,10 +5,12 @@ let page = 1;
 let mTotalPages;
 let pTotalPages;
 
-const $moviesTab = $("#movies-btn");
-const $peopleTab = $("#people-btn");
-const $usersTab = $("#users-btn");
-const $results = $(".results");
+const $moviesTab = $("#movies-tab");
+const $peopleTab = $("#people-tab");
+const $usersTab = $("#users-tab");
+const $movieResults = $("#movies-tab-pane");
+const $peopleResults = $("#people-tab-pane");
+const $userResults = $("#users-tab-pane");
 
 async function movieSearch() {
   const response = await axios.post("/api/search-results", {
@@ -50,88 +52,69 @@ getPTotalPages();
 async function movieTabScrollHandler() {
   if (page < mTotalPages) {
     page += 1;
-    const $movieResults = $(".movie-results");
     response = await movieSearch();
     console.log(response);
     buildMovieCard(
       response,
       $movieResults,
       true,
-      "https://media.themoviedb.org/t/p/w94_and_h141_bestv2"
+      "https://media.themoviedb.org/t/p/w220_and_h330_face"
     );
-    console.log("kill yourself");
   } else {
     return;
   }
 }
 
 async function movieTabHandler() {
-  $usersTab.removeClass("selected");
-  $peopleTab.removeClass("selected");
-  $moviesTab.addClass("selected");
-
   page = 1;
-  $results.empty();
+  $peopleResults.empty();
+  $userResults.empty();
   response = await movieSearch();
 
-  const movieResults = document.createElement("section");
-  movieResults.classList.add("movie-results");
-  movieResults.innerHTML += `<h2>${response["data"]["total_results"]} movie result(s) found</h2>`;
-  const $movieResults = $(movieResults);
+  $movieResults.append(
+    `<h2>${response["data"]["total_results"]} movie result(s) found</h2>`
+  );
   buildMovieCard(
     response,
     $movieResults,
     true,
-    "https://media.themoviedb.org/t/p/w94_and_h141_bestv2"
+    "https://media.themoviedb.org/t/p/w220_and_h330_face"
   );
-
-  $results.append(movieResults);
-
-  create_autoscroll($movieResults, movieTabScrollHandler);
 }
 
 $moviesTab.on("click", movieTabHandler);
 
-async function personTabScrollHandler() {
+async function peopleTabScrollHandler() {
   if (page < pTotalPages) {
     page += 1;
-    const $personResults = $(".person-results");
     response = await personSearch();
     buildPersonCard(
       response,
-      $personResults,
-      "https://media.themoviedb.org/t/p/w90_and_h90_face"
+      $peopleResults,
+      "https://media.themoviedb.org/t/p/w150_and_h150_face"
     );
   } else {
     return;
   }
 }
 
-async function personTabHandler() {
-  $usersTab.removeClass("selected");
-  $moviesTab.removeClass("selected");
-  $peopleTab.addClass("selected");
-
+async function peopleTabHandler() {
   page = 1;
-  $results.empty();
+  $movieResults.empty();
+  $userResults.empty();
   response = await personSearch();
 
-  const personResults = document.createElement("section");
-  personResults.classList.add("person-results");
-  personResults.innerHTML += `<h2>${response["data"]["total_results"]} person result(s) found</h2>`;
-  const $personResults = $(personResults);
+  $peopleResults.append(
+    `<h2>${response["data"]["total_results"]} people result(s) found</h2>`
+  );
   buildPersonCard(
     response,
-    $personResults,
-    "https://media.themoviedb.org/t/p/w90_and_h90_face"
+    $peopleResults,
+    "https://media.themoviedb.org/t/p/w150_and_h150_face"
   );
-
-  $results.append(personResults);
-
-  create_autoscroll($personResults, personTabScrollHandler);
 }
 
-$peopleTab.on("click", personTabHandler);
+$peopleTab.on("click", peopleTabHandler);
 
 function buildUserCard(response, container) {
   if (response["data"]["results"].length > 0) {
@@ -146,7 +129,7 @@ function buildUserCard(response, container) {
           <a href="/users/${user["id"]}">
           <div
           class="user-picture"
-          style="background-image: url('{{user.img_url}}');"
+          style="background-image: url('${user.img_url}');"
         ></div>
           </a>
           <div class="text">
@@ -157,26 +140,23 @@ function buildUserCard(response, container) {
           </div>
         </div>
       </div>`;
-      container.innerHTML += userCard;
+      container.append(userCard);
     }
   }
 }
 
 async function userTabHandler() {
-  $peopleTab.removeClass("selected");
-  $moviesTab.removeClass("selected");
-  $usersTab.addClass("selected");
-
   page = 1;
-  $results.empty();
+  $peopleResults.empty();
+  $movieResults.empty();
   response = await userSearch();
 
-  userResults = document.createElement("section");
-  userResults.classList.add("user-results");
-  userResults.innerHTML += `<h2>${response["data"]["total_results"]} user result(s) found</h2>`;
-  buildUserCard(response, userResults);
-
-  $results.append(userResults);
+  $userResults.append(
+    `<h2>${response["data"]["total_results"]} user result(s) found</h2>`
+  );
+  buildUserCard(response, $userResults);
 }
 
 $usersTab.on("click", userTabHandler);
+create_autoscroll($movieResults, movieTabScrollHandler);
+create_autoscroll($peopleResults, peopleTabScrollHandler);

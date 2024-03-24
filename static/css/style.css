@@ -90,3 +90,7 @@ form input.form-control:focus {
 .alert {
   background-color: #caebf2;
 }
+
+.display a:hover {
+  color: #e53a35;
+}

@@ -1,31 +1,122 @@
 {% extends 'home.html' %} {%block styling%}
+<link rel="stylesheet" href="/static/css/home.css" />
 <link rel="stylesheet" href="/static/css/search.css" />{%endblock%}{%block
 display%}
 <div class="search-contents">
   <div class="header">
     {% if type1 == 'movie' %}
-    <span
-      ><button class="tablinks selected" id="movies-btn">Movies</button></span
-    >
-    <span><button class="tablinks" id="people-btn">People</button></span>
-    <span><button class="tablinks" id="users-btn">Users</button></span>
+    <ul class="nav nav-tabs nav-justified">
+      <li class="nav-item">
+        <div
+          class="nav-link active"
+          data-bs-toggle="tab"
+          data-bs-target="#movies-tab-pane"
+          id="movies-tab"
+        >
+          Movies
+        </div>
+      </li>
+      <li class="nav-item">
+        <div
+          class="nav-link"
+          id="people-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#people-tab-pane"
+        >
+          People
+        </div>
+      </li>
+      <li class="nav-item">
+        <div
+          class="nav-link"
+          id="users-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#users-tab-pane"
+        >
+          Users
+        </div>
+      </li>
+    </ul>
     {% elif type1 == 'person' %}
-    <span
-      ><button class="tablinks selected" id="people-btn">People</button></span
-    >
-    <span><button class="tablinks" id="movies-btn">Movies</button></span>
-    <span><button class="tablinks" id="users-btn">Users</button></span>
-    {% elif type1 == 'user' %}
-    <span><button class="tablinks selected" id="users-btn">Users</button></span>
-    <span><button class="tablinks" id="people-btn">People</button></span>
-    <span><button class="tablinks" id="movies-btn">Movies</button></span>
+    <ul class="nav nav-tabs nav-justified">
+      <li class="nav-item">
+        <div
+          class="nav-link"
+          data-bs-toggle="tab"
+          data-bs-target="#movies-tab-pane"
+          id="movies-tab"
+        >
+          Movies
+        </div>
+      </li>
+      <li class="nav-item">
+        <div
+          class="nav-link active"
+          id="people-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#people-tab-pane"
+        >
+          People
+        </div>
+      </li>
+      <li class="nav-item">
+        <div
+          class="nav-link"
+          id="users-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#users-tab-pane"
+        >
+          Users
+        </div>
+      </li>
+    </ul>
+    {% else %}
+    <ul class="nav nav-tabs nav-justified">
+      <li class="nav-item">
+        <div
+          class="nav-link"
+          data-bs-toggle="tab"
+          data-bs-target="#movies-tab-pane"
+          id="movies-tab"
+        >
+          Movies
+        </div>
+      </li>
+      <li class="nav-item">
+        <div
+          class="nav-link"
+          id="people-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#people-tab-pane"
+        >
+          People
+        </div>
+      </li>
+      <li class="nav-item">
+        <div
+          class="nav-link active"
+          id="users-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#users-tab-pane"
+        >
+          Users
+        </div>
+      </li>
+    </ul>
     {% endif %}
   </div>
   <section class="results">
     {% if not type1 %}
     <h2>No results found</h2>
-    {% elif type1 == 'movie' %}
-    <section class="movie-results">
+    {%endif%}
+    {%if type1 == 'movie' %}
+    <section
+      class="tab-pane fade show active"
+      id="movies-tab-pane"
+      role="tabpanel"
+      aria-labelledby="movies-tab"
+      tabindex="0"
+    >
       <h2>{{results['total_results']}} movie result(s) found</h2>
       {% for movie in results['results'] %}
       <div class="card movie-card">
@@ -33,7 +124,7 @@ display%}
           <a href="/movies/{{movie['id']}}">
             {% if movie['poster_path'] %}
             <img
-              src="https://media.themoviedb.org/t/p/w94_and_h141_bestv2{{ movie['poster_path'] }}"
+              src="https://media.themoviedb.org/t/p/w220_and_h330_face{{ movie['poster_path'] }}"
               alt=""
             />
             {%else%}
@@ -45,7 +136,7 @@ display%}
               <a href="/movies/{{movie['id']}}">
                 <div><h3>{{movie['title']}}</h3></div>
               </a>
-              <div>
+              <div class="buttons">
                 {% if g.user %} {% if g.user.is_watching(movie['id']) %}
                 <form
                   method="POST"
@@ -93,10 +184,24 @@ display%}
         </div>
       </div>
       {% endfor %}
+      {% else %}
+    <section
+      class="tab-pane fade"
+      id="movies-tab-pane"
+      role="tabpanel"
+      aria-labelledby="movies-tab"
+      tabindex="0"
+    >
+      {%endif%}
     </section>
-
-    {% elif type1 == 'person' %}
-    <section class="person-results">
+    {% if type1 == 'person' %}
+    <section
+      class="tab-pane fade show active"
+      id="people-tab-pane"
+      role="tabpanel"
+      aria-labelledby="people-tab"
+      tabindex="0"
+    >
       <h2>{{results['total_results']}} person result(s) found</h2>
       {% for person in results['results'] %}
       <div class="card person-card">
@@ -104,7 +209,7 @@ display%}
           <a href="/people/{{person['id']}}">
             {% if person['profile_path'] %}
             <img
-              src="https://media.themoviedb.org/t/p/w90_and_h90_face{{person['profile_path']}}"
+              src="https://media.themoviedb.org/t/p/w150_and_h150_face{{person['profile_path']}}"
               alt=""
             />
             {%else%}
@@ -151,9 +256,24 @@ display%}
         </div>
       </div>
       {% endfor %}
+      {%else%}
+    <section
+      class="tab-pane fade"
+      id="people-tab-pane"
+      role="tabpanel"
+      aria-labelledby="people-tab"
+      tabindex="0"
+    >
+      {%endif%}
     </section>
-    {% elif type1 == 'user' %}
-    <section class="user-results">
+    {% if type1 == 'user' %}
+    <section
+      class="tab-pane fade show active"
+      id="users-tab-pane"
+      role="tabpanel"
+      aria-labelledby="users-tab"
+      tabindex="0"
+    >
       <h2>{{results['total_results']}} user result(s) found</h2>
       {% for user in results['results'] %}
       <div class="card user-card">
@@ -175,8 +295,16 @@ display%}
         </div>
       </div>
       {% endfor %}
+      {%else%}
+    <section
+      class="tab-pane fade"
+      id="users-tab-pane"
+      role="tabpanel"
+      aria-labelledby="users-tab"
+      tabindex="0"
+    >
+      {% endif %}
     </section>
-    {% endif %}
   </section>
 </div>
 <script src="/static/js/search.js"></script>

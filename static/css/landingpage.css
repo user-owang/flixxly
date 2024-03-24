@@ -201,3 +201,46 @@ banner2 form {
   color: #e53a35;
   margin-bottom: 15px;
 }
+
+.more-tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+  min-width: 220px;
+  min-height: 330px;
+  max-width: 220px;
+  max-height: 220px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #d5d5d5;
+}
+
+.more-tile > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e53a35;
+  border-radius: 20px;
+  border-style: none;
+  height: 40px;
+  width: 120px;
+  padding: auto 15px;
+  text-wrap: none;
+}
+
+.more-tile > div a {
+  color: white;
+}
+
+.more-tile > div a:hover {
+  color: white;
+}
+
+.scroll-content a {
+  color: black;
+}
+
+.scroll-content a:hover {
+  color: #e53a35;
+}

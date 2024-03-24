@@ -13,6 +13,7 @@
   margin: 0px auto;
   overflow: hidden;
   justify-content: center;
+  margin-bottom: 30px;
 }
 
 .edit-button {
@@ -28,9 +29,7 @@
 }
 
 .name {
-  width: 220px;
-  overflow-wrap: break-word;
-  margin: auto;
+  width: 100%;
 }
 
 img.hidden {
@@ -69,6 +68,83 @@ div.buttons > form {
 }
 
 .bio {
-  width: 220px;
-  margin: 0px auto;
+  width: 100%;
+}
+
+.no-poster {
+  width: 94px;
+  height: 141px;
+  background-color: white;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg");
+  outline-color: black;
+  outline-width: 1px;
+  outline-style: solid;
+}
+
+.no-profile {
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg");
+  outline-color: #d5d5d5;
+  outline-width: 1px;
+  outline-style: solid;
+}
+
+.person-card {
+  padding: 15px;
+}
+
+.tab-pane.fade {
+  display: none;
+}
+
+.tab-pane.fade.active {
+  display: block;
+}
+
+ul.nav .nav-link.active {
+  border-color: black;
+  border-bottom-color: #efefef;
+  background-color: #efefef;
+  color: #e53a35;
+  font-weight: bold;
+}
+
+ul.nav .nav-link.active:hover {
+  border-bottom-color: #efefef;
+}
+
+ul.nav .nav-link {
+  border-bottom-color: black;
+  color: black;
+}
+
+ul.nav .nav-link:hover {
+  border-bottom-color: black;
+}
+
+.display {
+  background-color: #efefef;
+  padding: 15px;
+  padding-bottom: 0px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  border-top-style: none;
+  box-sizing: border-box;
+  height: 600px;
+  overflow-y: scroll;
+  margin-bottom: 60px;
+}
+
+.card {
+  margin-bottom: 15px;
+  border-radius: 10px;
 }

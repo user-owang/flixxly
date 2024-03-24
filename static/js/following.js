@@ -1,7 +1,7 @@
-const $releaseRadar = $(".release-radar");
-const $pastFilms = $(".past-films");
-const $rrBtn = $("#release-radar");
-const $pfBtn = $("#past-films");
+const $releaseRadar = $("#rr-tab-pane");
+const $pastFilms = $("#pf-tab-pane");
+const $rrBtn = $("#rr-tab");
+const $pfBtn = $("#pf-tab");
 
 let rrPage = 1;
 let pfPage = 1;
@@ -49,7 +49,7 @@ getFTotalPages();
 
 async function rrScrollHandler() {
   if (rrPage < rrTotalPages) {
-    page += 1;
+    rrPage += 1;
     response = await getRR();
     buildMovieCard(
       response,
@@ -64,7 +64,7 @@ async function rrScrollHandler() {
 
 async function pfScrollHandler() {
   if (pfPage < pfTotalPages) {
-    page += 1;
+    pfPage += 1;
     response = await getPF();
     buildMovieCard(
       response,
@@ -77,19 +77,13 @@ async function pfScrollHandler() {
   }
 }
 
-function rrTabHandler() {
-  $rrBtn.addClass("selected");
-  $pfBtn.removeClass("selected");
-  hide($pastFilms);
-  show($releaseRadar);
-}
+$rrBtn.on("click", function () {
+  rrPage = 1;
+});
 
-function pfTabHandler() {
-  $pfBtn.addClass("selected");
-  $rrBtn.removeClass("selected");
-  show($pastFilms);
-  hide($releaseRadar);
-}
+$pfBtn.on("click", function () {
+  pfPage = 1;
+});
 
-$rrBtn.on("click", rrTabHandler);
-$pfBtn.on("click", pfTabHandler);
+create_autoscroll($releaseRadar, rrScrollHandler);
+create_autoscroll($pastFilms, pfScrollHandler);
