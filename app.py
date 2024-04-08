@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 from sqlalchemy.exc import IntegrityError
 from flask_sqlalchemy import SQLAlchemy
-from secret import READ_TOKEN, SECRET_KEY
+from secret import READ_TOKEN, SECRET_KEY, DATABASE_URI
 from tmdb import *
 import datetime
 from forms import LoginForm, AddUserForm, EditProfileForm
@@ -9,7 +9,7 @@ from models import db, connect_db,User, Follow, Watchlist, Seenlist, Movie, Pers
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///flixxly'
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 app.config['SECRET_KEY'] = SECRET_KEY
 
 
