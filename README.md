@@ -24,9 +24,11 @@ Additionally, users are able to keep track of movies they have seen (Seenlist) a
 4. Install the project dependencies by running 'pip install -r requirements.txt'
 5. Create a file named '.env'
 6. In the '.env' file, define your secret key, your TMDB API Read Access Token and your database URI as SECRET_KEY, READ_TOKEN and DATABASE_URI respectively. It should look like:
-> SECRET_KEY='insert secret key here'
-> READ_TOKEN='insert TMDB API Read Access Token here'
-> DATABASE_URI='insert database URI here'
+  > SECRET_KEY='insert secret key here'
+  > 
+  > READ_TOKEN='insert TMDB API Read Access Token here'
+  > 
+  > DATABASE_URI='insert database URI here'
 7. Lastly run 'flask run' to launch the app locally.
 
 ## Future Roadmap
