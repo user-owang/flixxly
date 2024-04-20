@@ -1,7 +1,12 @@
+import os
 import requests
-from secret import READ_TOKEN
+from dotenv import load_dotenv
 import urllib.parse
 import datetime
+
+load_dotenv()
+
+READ_TOKEN = os.getenv("READ_TOKEN")
 
 headshot_url = 'https://media.themoviedb.org/t/p/w470_and_h470_face'
 poster_url = 'https://media.themoviedb.org/t/p/w440_and_h660_face'

@@ -1,11 +1,18 @@
+import os
 from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 from sqlalchemy.exc import IntegrityError
 from flask_sqlalchemy import SQLAlchemy
-from secret import READ_TOKEN, SECRET_KEY, DATABASE_URI
+from dotenv import load_dotenv
 from tmdb import *
 import datetime
 from forms import LoginForm, AddUserForm, EditProfileForm
 from models import db, connect_db,User, Follow, Watchlist, Seenlist, Movie, Person
+
+load_dotenv()
+
+DATABASE_URI = os.getenv("DATABASE_URI")
+SECRET_KEY = os.getenv("SECRET_KEY")
+READ_TOKEN = os.getenv("READ_TOKEN")
 
 app = Flask(__name__)
 
