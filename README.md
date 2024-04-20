@@ -11,7 +11,10 @@ Additionally, users are able to keep track of movies they have seen (Seenlist) a
 ## How to set up the app
 
 ### Required technologies
-- Python version 
+
+- Python version
+- PostgreSQL
+
 To use the functionality provided by the TMDB API, you will need to register for an account with them and apply for an API key. More info can be found here: https://developer.themoviedb.org/docs/faq
 Additionally, I am using Flask SQLAlchemy to manage database queries. You will need to set up a database (I used PostgreSQL).
 Lastly you will need to set up an additional file named secret.py. In it you should define the read token provided by the TMDB API as READ_TOKEN, a secret key defined as SECRET_KEY, and the database URI defined as DATABASE_URI.
