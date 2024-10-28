@@ -1,7 +1,9 @@
-.dark {
+.row.dark {
   background-color: rgb(40, 40, 40);
+  margin-left: 0px;
+  margin-right: 0px;
 }
-.light {
+.row.light {
   background-color: #efefef;
 }
 
